@@ -75,45 +75,75 @@
       margin-bottom: 40px;
     }
 
+    /* Prevent `main.css` from adding its left stripe on this page */
+    .worksheets-page .worksheet-card::before {
+      display: none;
+    }
+
     .worksheet-card {
-      background: linear-gradient(135deg, #333333, #555555);
-      border: 2px solid #666666;
-      border-radius: 12px;
-      padding: 25px;
-      text-align: center;
-      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 14px;
+      padding: 18px 18px;
+      text-align: left;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
       position: relative;
       overflow: hidden;
+
+      /* Icon (left) + text (right) layout */
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      grid-template-rows: auto auto;
+      gap: 14px;
+      align-items: center;
     }
 
     .worksheet-card:hover {
-      background: linear-gradient(135deg, #FFFFFF, #F5F5F5);
-      color: #000;
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
-      border: 2px solid #FFFFFF;
+      transform: translateY(-4px);
+      border-color: rgba(74, 158, 255, 0.55);
+      box-shadow: 0 14px 38px rgba(74, 158, 255, 0.18);
     }
 
     .worksheet-card i {
-      font-size: 48px;
-      margin-bottom: 15px;
-      display: block;
+      grid-column: 1;
+      grid-row: 1 / span 2;
+
+      font-size: 22px;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+
       color: var(--accent-color);
+      background: rgba(74, 158, 255, 0.12);
+      border: 1px solid rgba(74, 158, 255, 0.28);
     }
 
     .worksheet-card h3 {
+      grid-column: 2;
+      grid-row: 1;
+
       font-size: 20px;
       font-weight: bold;
       margin-bottom: 10px;
+      color: #FFFFFF;
     }
 
     .worksheet-card p {
+      grid-column: 2;
+      grid-row: 2;
+
       font-size: 14px;
+      color: #CCCCCC;
       opacity: 0.8;
       line-height: 1.4;
-      margin-bottom: 15px;
+      margin-bottom: 0;
     }
 
 
@@ -159,7 +189,16 @@
       }
       
       .worksheet-card {
-        padding: 20px;
+        padding: 16px 14px;
+        grid-template-columns: 64px 1fr;
+        gap: 12px;
+      }
+
+      .worksheet-card i {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        border-radius: 14px;
       }
     }
 
@@ -178,6 +217,13 @@
       
       .worksheet-card p {
         font-size: 12px;
+      }
+
+      .worksheet-card i {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+        border-radius: 14px;
       }
     }
   </style>
