@@ -292,6 +292,13 @@
          <h3>Worksheet 12: Motor Relay</h3>
         <p>Motor control using relay switching and industrial automation.</p>
       </div>
+
+      <div class="worksheet-card" onclick="window.location.href='worksheet-13.html'">
+        <div class="progress-indicator not-started" id="progress-13"></div>
+         <i class="fas fa-lock"></i>
+         <h3>Worksheet 13: Lockout Tagout</h3>
+        <p>Lockout Tagout safety procedure for isolated equipment.</p>
+      </div>
     </div>
   </div>
 
@@ -322,7 +329,7 @@
     // Load progress indicators
     document.addEventListener('DOMContentLoaded', function() {
       // Load progress data from localStorage
-      for (let i = 1; i <= 12; i++) {
+      for (let i = 1; i <= 13; i++) {
         const progressKey = `worksheet-${i}`;
         const progressData = localStorage.getItem(progressKey);
         
