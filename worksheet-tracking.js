@@ -197,9 +197,12 @@ class WorksheetTracker {
     }
   }
 
-  // Lock a question so it can't be re-answered after submission
+  // Lock a question so it can't be re-answered after submission.
+  // Note: some worksheets' own submitAnswer already adds the 'submitted' class itself
+  // (for its CSS-only pointer-events lock), so this must NOT bail out just because that
+  // class is already present - otherwise the actual disabling below never runs for them.
   lockQuestion(questionItem) {
-    if (!questionItem || questionItem.classList.contains('submitted')) return;
+    if (!questionItem) return;
     questionItem.classList.add('submitted');
     questionItem.querySelectorAll('input[type="radio"]').forEach(input => {
       input.disabled = true;
@@ -769,9 +772,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (questionItem && questionItem.classList.contains('submitted')) {
           return; // already graded - ignore further submissions
         }
-        pageSubmitAnswer(questionNumber);
-        if (questionItem) {
-          worksheetTracker.lockQuestion(questionItem);
+        try {
+          pageSubmitAnswer(questionNumber);
+        } finally {
+          // Only lock if an option was actually selected (the page's own function
+          // alerts and bails out if nothing was picked - don't lock in that case,
+          // and don't let an error in the page's script skip locking either).
+          const hasSelection = questionItem && questionItem.querySelector(`input[name="question-${questionNumber}"]:checked`);
+          if (hasSelection) {
+            worksheetTracker.lockQuestion(questionItem);
+          }
         }
       };
     }

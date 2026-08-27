@@ -1,5 +1,5 @@
 // Service Worker for Matrix IM6930 Curriculum
-const CACHE_NAME = 'matrix-training-cache-v2.3';
+const CACHE_NAME = 'matrix-training-cache-v2.4';
 
 // Resources to cache
 const CORE_ASSETS = [
