@@ -210,11 +210,11 @@
           <div class="multiple-choice-options">
             <label class="option-label">
               <input type="radio" name="question-2" value="A" class="option-radio">
-              <span class="option-text">A) A PT100 RTD sensor and resistance temperature detector for precise measurements</span>
+              <span class="option-text">A) A K-type thermocouple and temperature measurement device with different characteristics</span>
             </label>
             <label class="option-label">
               <input type="radio" name="question-2" value="B" class="option-radio">
-              <span class="option-text">B) A K-type thermocouple and temperature measurement device with different characteristics</span>
+              <span class="option-text">B) A PT100 RTD sensor and resistance temperature detector for precise measurements</span>
             </label>
             <label class="option-label">
               <input type="radio" name="question-2" value="C" class="option-radio">
@@ -229,7 +229,7 @@
             <button class="submit-question-btn" onclick="submitAnswer(2)">Submit Answer</button>
           </div>
           <div class="correct-answer" style="display: none; margin-top: 15px; padding: 15px; background: #1a2f1a; border-radius: 4px; border-left: 3px solid #4CAF50;">
-            <strong style="color: #4CAF50;">Correct Answer:</strong> A) A PT100 RTD sensor, which is a common type of resistance temperature detector.
+            <strong style="color: #4CAF50;">Correct Answer:</strong> B) A PT100 RTD sensor, which is a common type of resistance temperature detector.
           </div>
         </div>
         
@@ -238,7 +238,7 @@
           <div class="multiple-choice-options">
             <label class="option-label">
               <input type="radio" name="question-3" value="A" class="option-radio">
-              <span class="option-text">A) Because the PLC can't read resistance directly—it needs a 0–10 V voltage signal for proper operation</span>
+              <span class="option-text">A) Because it saves energy and reduces power consumption in the system</span>
             </label>
             <label class="option-label">
               <input type="radio" name="question-3" value="B" class="option-radio">
@@ -250,14 +250,14 @@
             </label>
             <label class="option-label">
               <input type="radio" name="question-3" value="D" class="option-radio">
-              <span class="option-text">D) Because it saves energy and reduces power consumption in the system</span>
+              <span class="option-text">D) Because the PLC can't read resistance directly—it needs a 0–10 V voltage signal for proper operation</span>
             </label>
           </div>
           <div class="question-actions">
             <button class="submit-question-btn" onclick="submitAnswer(3)">Submit Answer</button>
           </div>
           <div class="correct-answer" style="display: none; margin-top: 15px; padding: 15px; background: #1a2f1a; border-radius: 4px; border-left: 3px solid #4CAF50;">
-            <strong style="color: #4CAF50;">Correct Answer:</strong> A) Because the PLC can't read resistance directly—it needs a 0–10 V voltage signal for proper operation.
+            <strong style="color: #4CAF50;">Correct Answer:</strong> D) Because the PLC can't read resistance directly—it needs a 0–10 V voltage signal for proper operation.
           </div>
         </div>
         
@@ -294,7 +294,7 @@
           <div class="multiple-choice-options">
             <label class="option-label">
               <input type="radio" name="question-5" value="A" class="option-radio">
-              <span class="option-text">A) It usually means a fault like a disconnected sensor, wrong input type, or wiring issue that requires immediate attention</span>
+              <span class="option-text">A) It means the pump is running and circulating fluid through the system</span>
             </label>
             <label class="option-label">
               <input type="radio" name="question-5" value="B" class="option-radio">
@@ -302,7 +302,7 @@
             </label>
             <label class="option-label">
               <input type="radio" name="question-5" value="C" class="option-radio">
-              <span class="option-text">C) It means the pump is running and circulating fluid through the system</span>
+              <span class="option-text">C) It usually means a fault like a disconnected sensor, wrong input type, or wiring issue that requires immediate attention</span>
             </label>
             <label class="option-label">
               <input type="radio" name="question-5" value="D" class="option-radio">
@@ -313,7 +313,7 @@
             <button class="submit-question-btn" onclick="submitAnswer(5)">Submit Answer</button>
           </div>
           <div class="correct-answer" style="display: none; margin-top: 15px; padding: 15px; background: #1a2f1a; border-radius: 4px; border-left: 3px solid #4CAF50;">
-            <strong style="color: #4CAF50;">Correct Answer:</strong> A) It usually means a fault like a disconnected sensor, wrong input type, or wiring issue that requires immediate attention.
+            <strong style="color: #4CAF50;">Correct Answer:</strong> C) It usually means a fault like a disconnected sensor, wrong input type, or wiring issue that requires immediate attention.
           </div>
         </div>
       </div>
@@ -361,10 +361,10 @@ function submitAnswer(questionNumber) {
   // Define correct answers for worksheet 9
   const correctAnswers = {
     "1": "C",
-    "2": "A", 
-    "3": "A",
+    "2": "B",
+    "3": "D",
     "4": "A",
-    "5": "A"
+    "5": "C"
   };
   
   // Save with enhanced tracking if available
