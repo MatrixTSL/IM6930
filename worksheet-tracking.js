@@ -5,7 +5,7 @@ class WorksheetTracker {
   constructor() {
     this.worksheets = {
       maintenance: [
-        { id: 1, title: "Simple PLC Control Systems", type: "maintenance", totalQuestions: 5 },
+        { id: 1, title: "Simple PLC Control Systems", type: "maintenance", totalQuestions: 4 },
         { id: 2, title: "Complex PLC Control Systems", type: "maintenance", totalQuestions: 5 },
         { id: 3, title: "HMIs", type: "maintenance", totalQuestions: 5 },
         { id: 4, title: "Emergency Stops", type: "maintenance", totalQuestions: 5 },
@@ -150,6 +150,65 @@ class WorksheetTracker {
     } catch (error) {
       console.error('Error saving answer:', error);
       return false;
+    }
+  }
+
+  // Restore previously saved answers into the page (radio selections + correct-answer reveal)
+  restoreAnswers(worksheetId, type = 'maintenance') {
+    try {
+      const key = `worksheet-${type}-${worksheetId}`;
+      const data = JSON.parse(localStorage.getItem(key) || '{}');
+      if (!data.answers) return;
+
+      Object.entries(data.answers).forEach(([questionNumber, answerData]) => {
+        const answer = answerData.value;
+        const questionItem = document.querySelector(`.question-item[data-question="${questionNumber}"]`);
+        if (!questionItem) return;
+
+        const selectedRadio = questionItem.querySelector(`input[name="question-${questionNumber}"][value="${answer}"]`);
+        if (selectedRadio) selectedRadio.checked = true;
+
+        // Work out the correct answer letter from the "Correct Answer: X) ..." text so this
+        // works generically across worksheets without duplicating each one's answer key.
+        const correctAnswerDiv = questionItem.querySelector('.correct-answer');
+        let correctLetter = null;
+        if (correctAnswerDiv) {
+          correctAnswerDiv.style.display = 'block';
+          const match = correctAnswerDiv.textContent.replace(/^\s*Correct Answer:\s*/, '').match(/^([A-D])\)/);
+          if (match) correctLetter = match[1];
+        }
+
+        questionItem.querySelectorAll('.option-label').forEach(label => {
+          const input = label.querySelector('input[type="radio"]');
+          if (!input) return;
+          label.classList.remove('correct', 'incorrect');
+          if (correctLetter && input.value === correctLetter) {
+            label.classList.add('correct');
+          } else if (input.value === answer && correctLetter && answer !== correctLetter) {
+            label.classList.add('incorrect');
+          }
+        });
+
+        // Already answered - lock it so it can't be redone
+        this.lockQuestion(questionItem);
+      });
+    } catch (error) {
+      console.error('Error restoring worksheet answers:', error);
+    }
+  }
+
+  // Lock a question so it can't be re-answered after submission
+  lockQuestion(questionItem) {
+    if (!questionItem || questionItem.classList.contains('submitted')) return;
+    questionItem.classList.add('submitted');
+    questionItem.querySelectorAll('input[type="radio"]').forEach(input => {
+      input.disabled = true;
+    });
+    const submitBtn = questionItem.querySelector('.submit-question-btn');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.style.cursor = 'not-allowed';
+      submitBtn.style.opacity = '0.6';
     }
   }
 
@@ -696,8 +755,27 @@ function submitAnswerWithTracking(questionNumber) {
   }
 }
 
-// Override existing submitAnswer function
-if (typeof submitAnswer === 'function') {
-  window.submitAnswerOriginal = submitAnswer;
-  window.submitAnswer = submitAnswerWithTracking;
-} 
+// On load: restore any previously saved answers, then lock every question's
+// own submitAnswer so an answer can't be changed and resubmitted once graded.
+document.addEventListener('DOMContentLoaded', function() {
+  try {
+    const worksheetId = getUrlParameter('id') || getWorksheetIdFromUrl();
+    worksheetTracker.restoreAnswers(worksheetId, 'maintenance');
+
+    if (typeof window.submitAnswer === 'function') {
+      const pageSubmitAnswer = window.submitAnswer;
+      window.submitAnswer = function(questionNumber) {
+        const questionItem = document.querySelector(`.question-item[data-question="${questionNumber}"]`);
+        if (questionItem && questionItem.classList.contains('submitted')) {
+          return; // already graded - ignore further submissions
+        }
+        pageSubmitAnswer(questionNumber);
+        if (questionItem) {
+          worksheetTracker.lockQuestion(questionItem);
+        }
+      };
+    }
+  } catch (error) {
+    console.error('Error initializing worksheet answer locking:', error);
+  }
+});
